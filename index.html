@@ -317,7 +317,7 @@
             <section id="tab-content-pomodoro" class="hidden space-y-6">
                 <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative">
                     <!-- Seletor de Modos -->
-                    <div class="flex justify-center bg-slate-950 p-1.5 rounded-2xl border border-slate-800 max-w-sm mx-auto mb-8">
+                    <div class="flex justify-center bg-slate-950 p-1.5 rounded-2xl border border-slate-800 max-w-sm mx-auto mb-6">
                         <button onclick="setTimerMode('work')" id="mode-btn-work" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-white bg-brand-600 shadow transition-all duration-300">
                             🍅 Foco (25m)
                         </button>
@@ -329,8 +329,22 @@
                         </button>
                     </div>
 
+                    <!-- Seletor de Tarefa Associada -->
+                    <div class="mb-8 bg-slate-950 p-4 rounded-2xl border border-slate-800/80">
+                        <label class="block text-xs font-semibold text-slate-400 mb-2 flex items-center gap-1.5">
+                            <span class="text-brand-400 text-sm">🎯</span> Selecione a Tarefa para Executar neste Ciclo:
+                        </label>
+                        <select id="pomo-task-selector" onchange="selectPomoTask(this.value)" class="w-full px-4 py-2.5 bg-slate-900 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200">
+                            <option value="">-- Sem tarefa associada (apenas temporizador) --</option>
+                            <!-- Preenchido dinamicamente com tarefas pendentes -->
+                        </select>
+                        <p id="pomo-selected-task-preview" class="hidden text-xs text-brand-300 mt-2 font-medium bg-brand-500/10 py-1.5 px-3 rounded-lg border border-brand-500/15">
+                            Foco activo em: <span id="pomo-active-task-name" class="font-bold"></span>
+                        </p>
+                    </div>
+
                     <!-- Mostrador -->
-                    <div class="flex flex-col items-center justify-center my-10 relative">
+                    <div class="flex flex-col items-center justify-center my-6 relative">
                         <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full border-8 border-slate-800 flex flex-col items-center justify-center shadow-inner">
                             <span id="pomo-timer-display" class="text-5xl md:text-6xl font-black text-white tracking-widest mb-1">25:00</span>
                             <p id="pomo-status-text" class="text-xs text-brand-300 uppercase tracking-widest font-semibold mt-1">Sessão Ativa</p>
@@ -651,7 +665,8 @@
                 isRunning: false,
                 timerId: null,
                 sessionsCompleted: 0,
-                minutesStudied: 0
+                minutesStudied: 0,
+                selectedTaskId: null //ID da tarefa em foco atual
             },
             flashcards: [],
             activeTab: 'dashboard',
@@ -684,8 +699,6 @@
                 }
             } catch (err) {
                 console.error("Erro na autenticação:", err);
-                
-                // Análise diagnóstica inteligente de erro
                 if (err.code === 'auth/operation-not-allowed') {
                     showToast(
                         "Ative o Login Anónimo!", 
@@ -734,6 +747,7 @@
                 state.tasks.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
                 
                 renderTasks();
+                renderPomoTaskSelector(); // Atualizar o selector de tarefas no painel pomodoro
                 updateDashboard();
             }, (error) => {
                 console.error("Erro a ler tarefas do Firestore:", error);
@@ -846,6 +860,8 @@
                 updateDashboard();
             } else if (tabName === 'tasks') {
                 renderTasks();
+            } else if (tabName === 'pomodoro') {
+                renderPomoTaskSelector();
             } else if (tabName === 'flashcards') {
                 renderFlashcards();
             }
@@ -922,6 +938,71 @@
             }
         }
 
+        // INTEGRAÇÃO: GERAR SELETOR DE TAREFAS NO POMODORO
+        function renderPomoTaskSelector() {
+            const selector = document.getElementById('pomo-task-selector');
+            if (!selector) return;
+
+            const previouslySelectedId = state.pomodoro.selectedTaskId;
+            selector.innerHTML = '<option value="">-- Sem tarefa associada (apenas temporizador) --</option>';
+
+            // Filtrar apenas tarefas pendentes para manter o foco
+            const pendingTasks = state.tasks.filter(t => !t.completed);
+
+            pendingTasks.forEach(task => {
+                const opt = document.createElement('option');
+                opt.value = task.id;
+                opt.textContent = `[${task.category}] ${task.title} (${task.priority})`;
+                
+                if (task.id === previouslySelectedId) {
+                    opt.selected = true;
+                }
+                selector.appendChild(opt);
+            });
+
+            updatePomoTaskPreview();
+        }
+
+        // ATUALIZAR INTERFACE DA TAREFA EM FOCO SELECIONADA
+        function selectPomoTask(taskId) {
+            state.pomodoro.selectedTaskId = taskId || null;
+            updatePomoTaskPreview();
+        }
+
+        function updatePomoTaskPreview() {
+            const preview = document.getElementById('pomo-selected-task-preview');
+            const nameSpan = document.getElementById('pomo-active-task-name');
+
+            if (state.pomodoro.selectedTaskId) {
+                const activeTask = state.tasks.find(t => t.id === state.pomodoro.selectedTaskId);
+                if (activeTask && !activeTask.completed) {
+                    nameSpan.textContent = activeTask.title;
+                    preview.classList.remove('hidden');
+                } else {
+                    // Limpar seleção caso tenha sido concluída ou excluída
+                    state.pomodoro.selectedTaskId = null;
+                    const selector = document.getElementById('pomo-task-selector');
+                    if (selector) selector.value = "";
+                    preview.classList.add('hidden');
+                }
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
+        // FUNÇÃO PARA AUTOMATICAMENTE CONCLUIR TAREFA NA NUVEM
+        async function markTaskAsCompletedAutomatically(id) {
+            if (!user) return;
+            try {
+                const taskDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'tasks', id);
+                await updateDoc(taskDocRef, { completed: true });
+                showToast("🎯 Foco Concluído!", "A tarefa selecionada foi automaticamente finalizada.");
+                setTimeout(hideToast, 4000);
+            } catch (err) {
+                console.error("Erro ao concluir tarefa automaticamente:", err);
+            }
+        }
+
         function toggleTimer() {
             if (state.pomodoro.isRunning) {
                 state.pomodoro.isRunning = false;
@@ -929,7 +1010,7 @@
                 state.pomodoro.timerId = null;
             } else {
                 state.pomodoro.isRunning = true;
-                state.pomodoro.timerId = setInterval(() => {
+                state.pomodoro.timerId = setInterval(async () => {
                     if (state.pomodoro.timeLeft > 0) {
                         state.pomodoro.timeLeft--;
                         if (state.pomodoro.mode === 'work' && state.pomodoro.timeLeft % 60 === 0) {
@@ -947,7 +1028,16 @@
                             state.pomodoro.sessionsCompleted++;
                             state.pomodoro.minutesStudied += state.pomodoro.workTime;
                             saveStatsToCloud();
-                            showToast("🍅 Foco Completo!", "Bom trabalho! Faça agora uma pausa de 5 minutos.");
+
+                            // LOGICA DE AUTO-CONCLUSÃO SELECIONADA
+                            if (state.pomodoro.selectedTaskId) {
+                                const targetTaskId = state.pomodoro.selectedTaskId;
+                                state.pomodoro.selectedTaskId = null; // Resetar para evitar redundâncias na renderização
+                                await markTaskAsCompletedAutomatically(targetTaskId);
+                            } else {
+                                showToast("🍅 Foco Completo!", "Bom trabalho! Faça agora uma pausa de 5 minutos.");
+                            }
+
                             setTimerMode('short');
                         } else {
                             showToast("☕ Pausa Concluída!", "O seu tempo de descanso terminou. Vamos recomeçar o foco?");
@@ -977,8 +1067,10 @@
                 state.pomodoro.longTime = lVal;
                 setTimerMode(state.pomodoro.mode);
                 showToast("Configuração Guardada", "As durações foram atualizadas!");
+                setTimeout(hideToast, 3000);
             } else {
                 showToast("Erro", "Insira valores válidos superiores a zero.");
+                setTimeout(hideToast, 3000);
             }
         }
 
@@ -1008,8 +1100,6 @@
                 const tasksCol = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
                 await addDoc(tasksCol, newTask);
                 showToast("Tarefa Guardada", "A tarefa foi sincronizada com sucesso!");
-                
-                // Auto-fechar alertas anteriores se houver
                 setTimeout(hideToast, 3000);
             } catch (err) {
                 console.error("Erro ao guardar tarefa:", err);
@@ -1310,6 +1400,7 @@
         window.playBeep = playBeep;
         window.hideToast = hideToast;
         window.setTimerMode = setTimerMode;
+        window.selectPomoTask = selectPomoTask;
 
         // Início da sequência
         window.onload = function() {

@@ -621,18 +621,17 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-
+        
         // Variáveis globais do ambiente (injetadas ou mockadas para desenvolvimento)
         const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-foco-produtivo';
-        const firebaseConfig = typeof __firebase_config !== 'undefined' 
-            ? JSON.parse(__firebase_config) 
-            : {
-                apiKey: "",
-                authDomain: "mock-auth-domain.firebaseapp.com",
-                projectId: "mock-project-id",
-                storageBucket: "mock-storage-bucket.appspot.com",
-                messagingSenderId: "123456789",
-                appId: "1:123456789:web:abcdef"
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAsSteanXRoGqdxkclTB0zdluEjY8enhc",
+            authDomain: "focoprodutivo-950c1.firebaseapp.com",
+            projectId: "focoprodutivo-950c1",
+            storageBucket: "focoprodutivo-950c1.firebasestorage.app",
+            messagingSenderId: "157940147604",
+            appId: "1:157940147604:web:c69456209243e6efae9b81"
             };
 
         // Inicialização do Firebase e Firestore

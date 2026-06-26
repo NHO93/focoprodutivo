@@ -617,11 +617,14 @@
     <!-- FIREBASE & CORE JAVASCRIPT STATE ENGINE -->
     <script type="module">
         // Importações diretas dos SDKs oficiais do Firebase
-        import { initializeApp } from "firebase/app";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
-        // https://firebase.google.com/docs/web/setup#available-libraries
-        // Your web app's Firebase configuration
+        
+        // Identificação da aplicação para regras de segurança e separação de ambiente
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'focoprodutivo-950c1';
+
+        // Configuração real do seu aplicativo fornecida pelo Firebase Console
         const firebaseConfig = {
           apiKey: "AIzaSyCAsSteanXRoGqdxkclTB0zdluEjY8enhc",
           authDomain: "focoprodutivo-950c1.firebaseapp.com",
@@ -630,6 +633,7 @@
           messagingSenderId: "157940147604",
           appId: "1:157940147604:web:c69456209243e6efae9b81"
         };
+
         // Inicialização do Firebase e Firestore
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
@@ -1149,6 +1153,7 @@
             document.getElementById('flashcard-inner').style.transform = '';
         }
 
+        // FLIP DO CARTÃO
         function flipActiveCard() {
             const inner = document.getElementById('flashcard-inner');
             state.isCardFlipped = !state.isCardFlipped;
@@ -1199,7 +1204,7 @@
             try {
                 const fcCol = collection(db, 'artifacts', appId, 'users', user.uid, 'flashcards');
                 await addDoc(fcCol, newCard);
-                state.currentFlashcardIndex = 0; // focar no mais recente
+                state.currentFlashcardIndex = 0; 
                 showToast("Flashcard Guardado", "Salvo para revisão ativa de: " + category);
             } catch (err) {
                 console.error(err);

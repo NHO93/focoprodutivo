@@ -5,10 +5,13 @@
 > Tudo é guardado automaticamente em tempo real na nuvem através do Firebase Firestore, garantindo que nunca perde o seu progresso.
 
 > Funcionalidades
-￼> Método Pomodoro: Temporizador com ciclos ajustáveis de foco, pausa curta e pausa longa com alertas sonoros integrados.
-￼> Quadro de Tarefas: Adicione, filtre por status (todas, pendentes, concluídas) e defina níveis de prioridade (Alta, Média, Baixa) para as suas metas diárias.
-￼> Flashcards: Crie perguntas e respostas organizadas por categorias para testar os seus conhecimentos de forma ativa.
-￼> Sincronização na Nuvem: Gravação automática de estatísticas, tarefas e cartões associados ao seu ID exclusivo de utilizador.
+* Método Pomodoro: Temporizador com ciclos ajustáveis de foco, pausa curta e pausa longa com alertas sonoros integrados.
+￼
+* Quadro de Tarefas: Adicione, filtre por status (todas, pendentes, concluídas) e defina níveis de prioridade (Alta, Média, Baixa) para as suas metas diárias.
+
+* Flashcards: Crie perguntas e respostas organizadas por categorias para testar os seus conhecimentos de forma ativa.
+
+* Sincronização na Nuvem: Gravação automática de estatísticas, tarefas e cartões associados ao seu ID exclusivo de utilizador.
 
 ## Como usar no iPhone (como App Nativo)
 

@@ -1,0 +1,1307 @@
+```html
+<!DOCTYPE html>
+<html lang="pt-PT" class="h-full bg-slate-950 text-slate-100">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FocoProdutivo - Organização e Estudo Activo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            900: '#4c1d95',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght=300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+        /* Card Flip effect */
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .preserve-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="h-full flex flex-col md:flex-row overflow-hidden">
+
+    <!-- BARRA LATERAL (Desktop) -->
+    <aside class="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 p-6 flex-shrink-0 justify-between">
+        <div class="space-y-8">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-brand-600 rounded-xl text-white shadow-lg shadow-brand-500/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg text-white">FocoProdutivo</h1>
+                    <p class="text-xs text-slate-400">Estudo & Organização</p>
+                </div>
+            </div>
+
+            <!-- Navegação -->
+            <nav class="space-y-2">
+                <button onclick="switchTab('dashboard')" id="btn-tab-dashboard" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 bg-brand-600/10 text-brand-200 border-l-4 border-brand-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    Painel Principal
+                </button>
+                <button onclick="switchTab('pomodoro')" id="btn-tab-pomodoro" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.8 2.8a1 1 0 101.414-1.414L11 9.586V6z" clip-rule="evenodd" />
+                    </svg>
+                    Método Pomodoro
+                </button>
+                <button onclick="switchTab('tasks')" id="btn-tab-tasks" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M6.267 3.455a.75.75 0 00-.708-.523H4.5a.5.5 0 00-.5.5v13.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V3.432a.5.5 0 00-.5-.5h-1.059a.75.75 0 00-.708.523L13.11 5.5H6.89l-.623-2.045zM12 9a1 1 0 100-2H8a1 1 0 000 2h4zm-3 3a1 1 0 100-2H8a1 1 0 000 2h1zm3 2a1 1 0 110-2H8a1 1 0 110 2h4z" clip-rule="evenodd" />
+                    </svg>
+                    As Minhas Tarefas
+                </button>
+                <button onclick="switchTab('flashcards')" id="btn-tab-flashcards" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+                    </svg>
+                    Estudo Activo
+                </button>
+            </nav>
+        </div>
+
+        <!-- Zona Inferior com info do Utilizador e Nuvem -->
+        <div class="space-y-4 border-t border-slate-800 pt-6">
+            <div class="bg-slate-950 p-3 rounded-xl border border-slate-800 text-[11px] text-slate-400 space-y-1.5">
+                <div class="flex items-center gap-1.5">
+                    <span id="sync-dot" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                    <span id="sync-text" class="font-bold">A ligar ao servidor...</span>
+                </div>
+                <div class="pt-1 border-t border-slate-900">
+                    <p class="font-semibold text-slate-500 uppercase tracking-wider">ID do Utilizador:</p>
+                    <p id="user-id-display" class="font-mono text-slate-300 break-all select-all">A carregar...</p>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-r from-brand-900/30 to-brand-600/10 p-4 rounded-2xl border border-brand-500/10">
+                <p class="text-xs text-brand-300 font-semibold mb-1">Frase de Foco:</p>
+                <p id="motivational-quote" class="text-xs text-slate-400 italic">"A consistência supera o talento."</p>
+                <button onclick="generateNewQuote()" class="mt-2 text-[10px] text-brand-400 hover:text-brand-300 underline font-medium">Outra frase</button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- CONTENTOR PRINCIPAL -->
+    <main class="flex-grow flex flex-col min-w-0 overflow-y-auto">
+        <!-- CABEÇALHO SUPERIOR (Mobile) -->
+        <header class="md:hidden flex items-center justify-between bg-slate-900 border-b border-slate-800 p-4 flex-shrink-0 z-30">
+            <div class="flex items-center gap-2">
+                <div class="p-1.5 bg-brand-600 rounded-lg text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                </div>
+                <h1 class="font-bold text-base text-white">FocoProdutivo</h1>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <!-- Status de sincronização móvel -->
+                <span id="sync-dot-mobile" class="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse"></span>
+                <button onclick="playBeep()" class="p-2 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800" title="Testar Som">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z" />
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- CORPO PRINCIPAL COM SCROLL -->
+        <div class="p-4 md:p-8 flex-grow">
+            <!-- NOTIFICAÇÃO TOAST -->
+            <div id="custom-toast" class="hidden fixed bottom-20 md:bottom-6 right-6 z-50 max-w-sm bg-slate-900 border border-brand-500/30 shadow-2xl p-4 rounded-2xl flex items-start gap-3 animate-bounce">
+                <div class="p-2 bg-brand-600 rounded-xl text-white flex-shrink-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white text-sm" id="toast-title">Notificação</h4>
+                    <p class="text-xs text-slate-400 mt-0.5" id="toast-message">Detalhes do evento.</p>
+                </div>
+                <button onclick="hideToast()" class="text-slate-500 hover:text-white self-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- TAB 1: DASHBOARD / PAINEL -->
+            <section id="tab-content-dashboard" class="space-y-6">
+                <!-- Welcome Banner -->
+                <div class="relative bg-gradient-to-r from-brand-900 to-indigo-950 rounded-3xl p-6 md:p-8 overflow-hidden border border-brand-500/20 shadow-xl">
+                    <div class="relative z-10 md:max-w-xl">
+                        <span class="inline-flex items-center gap-1.5 py-1 px-3 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 mb-4">
+                            ⭐ Bons estudos! Armazenamento Ativo
+                        </span>
+                        <h2 class="text-2xl md:text-3xl font-bold text-white mb-2 leading-tight">Os seus dados estão seguros na nuvem!</h2>
+                        <p class="text-slate-300 text-sm md:text-base mb-6 leading-relaxed">
+                            A sua lista de tarefas, as métricas de tempo de estudo e os flashcards são automaticamente guardados em tempo real no seu ID de utilizador exclusivo.
+                        </p>
+                        <div class="flex flex-wrap gap-3">
+                            <button onclick="switchTab('pomodoro')" class="px-5 py-2.5 bg-brand-600 hover:bg-brand-500 text-white font-medium rounded-xl text-sm transition-all shadow-lg shadow-brand-500/20 hover:scale-[1.02] active:scale-[0.98]">
+                                Iniciar Foco ⏱️
+                            </button>
+                            <button onclick="switchTab('tasks')" class="px-5 py-2.5 bg-slate-800/80 hover:bg-slate-800 text-slate-200 border border-slate-700/50 font-medium rounded-xl text-sm transition-all hover:scale-[1.02] active:scale-[0.98]">
+                                Ver Tarefas
+                            </button>
+                        </div>
+                    </div>
+                    <div class="absolute right-0 bottom-0 top-0 opacity-10 pointer-events-none md:opacity-20 flex items-center justify-end pr-10">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-64 w-64 text-brand-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Estatísticas -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                        <div class="p-3 bg-indigo-500/10 text-indigo-400 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Conclusão Geral</p>
+                            <h3 id="stat-completed-percent" class="text-xl font-bold text-white mt-1">0%</h3>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Das tarefas concluídas</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                        <div class="p-3 bg-amber-500/10 text-accent-500 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Tempo de Foco</p>
+                            <h3 id="stat-focus-minutes" class="text-xl font-bold text-white mt-1">0 min</h3>
+                            <p id="stat-sessions-count" class="text-[10px] text-slate-500 mt-0.5">0 sessões Pomodoro</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                        <div class="p-3 bg-emerald-500/10 text-emerald-400 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Pendentes</p>
+                            <h3 id="stat-pending-tasks" class="text-xl font-bold text-white mt-1">0</h3>
+                            <p id="stat-completed-count" class="text-[10px] text-slate-500 mt-0.5">0 já concluídas hoje</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 p-5 rounded-2xl flex items-center gap-4">
+                        <div class="p-3 bg-brand-500/10 text-brand-400 rounded-xl">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 uppercase tracking-wider font-semibold">Flashcards</p>
+                            <h3 id="stat-cards-count" class="text-xl font-bold text-white mt-1">0</h3>
+                            <p class="text-[10px] text-slate-500 mt-0.5">Disponíveis para revisão</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grelha Principal do Painel -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                    <!-- Esquerda: Mini Pomodoro -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col items-center justify-between">
+                        <div class="w-full flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                            <h3 class="font-bold text-white text-base">Foco Pomodoro</h3>
+                            <span class="px-2 py-0.5 bg-brand-500/20 text-brand-300 rounded text-xs" id="dash-timer-mode">Trabalho</span>
+                        </div>
+                        
+                        <div class="relative flex items-center justify-center my-6">
+                            <div class="w-36 h-36 rounded-full border-4 border-slate-800 flex items-center justify-center">
+                                <span id="dash-timer-display" class="text-3xl font-bold text-white tracking-widest">25:00</span>
+                            </div>
+                        </div>
+
+                        <div class="w-full flex gap-2">
+                            <button onclick="toggleTimer()" id="dash-timer-btn-toggle" class="flex-grow py-2.5 px-4 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-semibold transition-all">
+                                Iniciar Foco
+                            </button>
+                            <button onclick="resetTimer()" class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl transition-all" title="Reiniciar">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4H4v5h5M4 9h5" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Centro/Direita: Resumo das Tarefas -->
+                    <div class="lg:col-span-2 bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+                                <h3 class="font-bold text-white text-base">Tarefas para Hoje</h3>
+                                <button onclick="switchTab('tasks')" class="text-xs text-brand-400 hover:text-brand-300 font-medium">Ver todas &rarr;</button>
+                            </div>
+
+                            <div id="dash-tasks-list" class="space-y-2.5 max-h-[220px] overflow-y-auto">
+                                <!-- Inserido via JS -->
+                            </div>
+                        </div>
+
+                        <!-- Adicionar Rápido -->
+                        <div class="mt-6 pt-4 border-t border-slate-800">
+                            <form id="dash-quick-add-form" class="flex gap-2" onsubmit="handleQuickAddTask(event)">
+                                <input id="dash-quick-add-input" type="text" placeholder="Adicionar tarefa rápida para hoje..." class="flex-grow px-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200 placeholder-slate-500 transition-colors">
+                                <button type="submit" class="p-2.5 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-semibold transition-all shadow-lg shadow-brand-500/10">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: CRONÓMETRO POMODORO -->
+            <section id="tab-content-pomodoro" class="hidden space-y-6">
+                <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 md:p-10 shadow-2xl relative">
+                    <!-- Seletor de Modos -->
+                    <div class="flex justify-center bg-slate-950 p-1.5 rounded-2xl border border-slate-800 max-w-sm mx-auto mb-8">
+                        <button onclick="setTimerMode('work')" id="mode-btn-work" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-white bg-brand-600 shadow transition-all duration-300">
+                            🍅 Foco (25m)
+                        </button>
+                        <button onclick="setTimerMode('short')" id="mode-btn-short" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all duration-300">
+                            ☕ Pausa Curta (5m)
+                        </button>
+                        <button onclick="setTimerMode('long')" id="mode-btn-long" class="flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all duration-300">
+                            🌴 Pausa Longa (15m)
+                        </button>
+                    </div>
+
+                    <!-- Mostrador -->
+                    <div class="flex flex-col items-center justify-center my-10 relative">
+                        <div class="relative w-64 h-64 md:w-72 md:h-72 rounded-full border-8 border-slate-800 flex flex-col items-center justify-center shadow-inner">
+                            <span id="pomo-timer-display" class="text-5xl md:text-6xl font-black text-white tracking-widest mb-1">25:00</span>
+                            <p id="pomo-status-text" class="text-xs text-brand-300 uppercase tracking-widest font-semibold mt-1">Sessão Ativa</p>
+                        </div>
+                    </div>
+
+                    <!-- Controlos -->
+                    <div class="flex justify-center items-center gap-4 max-w-md mx-auto">
+                        <button onclick="resetTimer()" class="p-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-2xl transition-all shadow-lg hover:scale-[1.03]" title="Resetar Timer">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 4H4v5h5M4 9h5" />
+                            </svg>
+                        </button>
+
+                        <button onclick="toggleTimer()" id="pomo-timer-btn-toggle" class="flex-grow py-4 px-6 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl text-base font-bold transition-all shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-[0.98]">
+                            Começar Sessão
+                        </button>
+
+                        <button onclick="playBeep()" class="p-4 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-2xl transition-all shadow-lg hover:scale-[1.03]" title="Testar Som">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072M18.364 5.636a9 9 0 010 12.728M12 18.75V5.25L7.75 9.5H4.5v5h3.25L12 18.75z" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Configuração de Intervalos -->
+                    <div class="mt-10 pt-8 border-t border-slate-800/80">
+                        <h4 class="text-sm font-semibold text-slate-300 text-center mb-4">Ajustar Intervalos (minutos)</h4>
+                        <div class="grid grid-cols-3 gap-3 max-w-sm mx-auto">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase text-center mb-1">Foco</label>
+                                <input type="number" id="cfg-work" value="25" min="1" class="w-full text-center py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase text-center mb-1">Pausa C.</label>
+                                <input type="number" id="cfg-short" value="5" min="1" class="w-full text-center py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-brand-500">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-500 uppercase text-center mb-1">Pausa L.</label>
+                                <input type="number" id="cfg-long" value="15" min="1" class="w-full text-center py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-sm text-white focus:outline-none focus:border-brand-500">
+                            </div>
+                        </div>
+                        <div class="flex justify-center mt-3">
+                            <button onclick="applyTimerConfig()" class="py-1 px-4 bg-brand-600/20 hover:bg-brand-600/40 text-brand-300 border border-brand-500/20 rounded-lg text-xs font-semibold transition-all">Aplicar Novos Tempos</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 3: AS MINHAS TAREFAS -->
+            <section id="tab-content-tasks" class="hidden space-y-6">
+                <!-- Filtros e Info -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Quadro de Tarefas</h2>
+                        <p class="text-xs text-slate-400 mt-1">Organize os seus objectivos de estudo e tarefas pessoais por relevância (Guardado na nuvem).</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="filterTasks('all')" id="filter-all" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all bg-brand-600 text-white">Todas</button>
+                        <button onclick="filterTasks('pending')" id="filter-pending" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700">Pendentes</button>
+                        <button onclick="filterTasks('completed')" id="filter-completed" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700">Concluídas</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <!-- Form de Criação -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 sticky top-4">
+                        <h3 class="font-bold text-white text-base mb-4 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-brand-400" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                            </svg>
+                            Nova Tarefa
+                        </h3>
+                        <form id="task-creation-form" onsubmit="handleAddTask(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Descrição da Tarefa</label>
+                                <input type="text" id="task-input-title" required placeholder="Ex: Estudar capítulo de Termodinâmica" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200 placeholder-slate-500">
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Categoria</label>
+                                    <select id="task-input-category" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200">
+                                        <option value="Estudos">📚 Estudos</option>
+                                        <option value="Trabalho">💻 Trabalho</option>
+                                        <option value="Pessoal">🧘 Pessoal</option>
+                                        <option value="Outros">🏷️ Outros</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Prioridade</label>
+                                    <select id="task-input-priority" class="w-full px-3 py-2 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200">
+                                        <option value="Alta">🔴 Alta</option>
+                                        <option value="Média">🟡 Média</option>
+                                        <option value="Baixa">🟢 Baixa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-bold transition-all shadow-lg shadow-brand-500/10">
+                                Guardar Tarefa
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Lista Renderizada -->
+                    <div class="lg:col-span-2 space-y-3">
+                        <div id="tasks-render-list" class="space-y-3">
+                            <!-- Inserido dinamicamente -->
+                        </div>
+
+                        <!-- Empty state -->
+                        <div id="tasks-empty-state" class="hidden bg-slate-900 border border-dashed border-slate-800 rounded-2xl p-12 text-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            <p class="text-slate-400 font-semibold text-sm">Nenhuma tarefa encontrada por aqui.</p>
+                            <p class="text-slate-500 text-xs mt-1">Crie uma nova na barra ao lado para começar!</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: FLASHCARDS (ESTUDO ACTIVO) -->
+            <section id="tab-content-flashcards" class="hidden space-y-6">
+                <!-- Header flashcard menu -->
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-5 rounded-2xl">
+                    <div>
+                        <h2 class="text-xl font-bold text-white">Flashcards de Estudo Activo</h2>
+                        <p class="text-xs text-slate-400 mt-1">Crie perguntas e respostas para memorizar fórmulas ou conceitos. Tudo sincronizado na nuvem.</p>
+                    </div>
+                    <button onclick="openNewFlashcardModal()" class="px-4 py-2 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl text-xs transition-all shadow-lg shadow-brand-500/20">
+                        + Criar Novo Card
+                    </button>
+                </div>
+
+                <!-- Carrossel de Flashcards -->
+                <div class="max-w-xl mx-auto py-6">
+                    <div id="flashcards-study-container" class="space-y-6">
+                        <div class="flex justify-between items-center text-xs text-slate-400">
+                            <span id="flash-idx-display">Card 1 de 2</span>
+                            <span id="flash-category-display" class="px-2 py-0.5 bg-brand-900/40 text-brand-300 rounded-full border border-brand-500/10 font-semibold">História</span>
+                        </div>
+
+                        <!-- FLIP CARD -->
+                        <div onclick="flipActiveCard()" class="perspective-1000 cursor-pointer w-full h-80 relative select-none">
+                            <div id="flashcard-inner" class="preserve-3d transition-transform duration-500 w-full h-full relative">
+                                
+                                <!-- FRENTE -->
+                                <div class="backface-hidden w-full h-full rounded-3xl p-8 bg-slate-900 border-2 border-slate-800 flex flex-col justify-between absolute shadow-xl">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-widest">Pergunta (Frente)</span>
+                                        <span class="text-xs text-slate-500">Toque para ver a resposta 🔄</span>
+                                    </div>
+                                    <div class="flex-grow flex items-center justify-center text-center">
+                                        <h3 id="flash-front-text" class="text-lg md:text-xl font-bold text-white leading-relaxed">A carregar...</h3>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full font-bold">Clique para Revelar</span>
+                                    </div>
+                                </div>
+
+                                <!-- VERSO -->
+                                <div class="backface-hidden rotate-y-180 w-full h-full rounded-3xl p-8 bg-brand-900/30 border-2 border-brand-500/30 flex flex-col justify-between absolute shadow-2xl">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-xs font-semibold text-brand-400 uppercase tracking-widest">Resposta (Verso)</span>
+                                        <span class="text-xs text-slate-500">Toque para ver a pergunta 🔄</span>
+                                    </div>
+                                    <div class="flex-grow flex items-center justify-center text-center px-4">
+                                        <p id="flash-back-text" class="text-sm md:text-base text-slate-200 leading-relaxed font-medium">A carregar...</p>
+                                    </div>
+                                    <div class="text-center">
+                                        <span class="text-[10px] text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded-full font-bold">Memorizado!</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Navegação de Cartões -->
+                        <div class="flex items-center justify-between gap-4">
+                            <button onclick="prevFlashcard()" class="p-3 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <button onclick="deleteActiveFlashcard()" class="text-xs font-semibold text-rose-400 hover:text-rose-300 transition-all flex items-center gap-1.5 px-4 py-2.5 bg-rose-500/10 rounded-xl border border-rose-500/20">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                                Eliminar Card
+                            </button>
+                            <button onclick="nextFlashcard()" class="p-3 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl border border-slate-800 hover:border-slate-700 transition-all">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Flashcard list empty state -->
+                    <div id="flashcards-empty-state" class="hidden bg-slate-900 border border-dashed border-slate-800 rounded-3xl p-12 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-slate-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        <p class="text-slate-400 font-semibold text-sm">Ainda não tem nenhum Flashcard criado.</p>
+                        <p class="text-slate-500 text-xs mt-1">Crie o seu primeiro para começar as suas sessões de memorização activa!</p>
+                        <button onclick="openNewFlashcardModal()" class="mt-4 px-4 py-2 bg-brand-600/20 hover:bg-brand-600 text-brand-300 hover:text-white border border-brand-500/20 rounded-xl text-xs font-semibold transition-all">
+                            Adicionar Cartão
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- NAVEGAÇÃO FLUTUANTE MÓVEL -->
+    <nav class="md:hidden sticky bottom-0 left-0 right-0 z-40 bg-slate-900 border-t border-slate-800 flex justify-around p-3 pb-5 shadow-2xl backdrop-blur-md">
+        <button onclick="switchTab('dashboard')" id="btn-m-dashboard" class="flex flex-col items-center gap-1 text-brand-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+            </svg>
+            <span class="text-[10px] font-semibold">Painel</span>
+        </button>
+        <button onclick="switchTab('pomodoro')" id="btn-m-pomodoro" class="flex flex-col items-center gap-1 text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.8 2.8a1 1 0 101.414-1.414L11 9.586V6z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-[10px] font-semibold">Pomodoro</span>
+        </button>
+        <button onclick="switchTab('tasks')" id="btn-m-tasks" class="flex flex-col items-center gap-1 text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M6.267 3.455a.75.75 0 00-.708-.523H4.5a.5.5 0 00-.5.5v13.5a.5.5 0 00.5.5h11a.5.5 0 00.5-.5V3.432a.5.5 0 00-.5-.5h-1.059a.75.75 0 00-.708.523L13.11 5.5H6.89l-.623-2.045zM12 9a1 1 0 100-2H8a1 1 0 000 2h4zm-3 3a1 1 0 100-2H8a1 1 0 000 2h1zm3 2a1 1 0 110-2H8a1 1 0 110 2h4z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-[10px] font-semibold">Tarefas</span>
+        </button>
+        <button onclick="switchTab('flashcards')" id="btn-m-flashcards" class="flex flex-col items-center gap-1 text-slate-500">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" />
+            </svg>
+            <span class="text-[10px] font-semibold">Cards</span>
+        </button>
+    </nav>
+
+    <!-- CRIAÇÃO DE NOVO FLASHCARD (Modal) -->
+    <div id="flashcard-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+                <h3 class="font-bold text-white text-lg">Criar Novo Flashcard</h3>
+                <button onclick="closeNewFlashcardModal()" class="text-slate-500 hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            
+            <form id="flashcard-creation-form" onsubmit="handleCreateFlashcard(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Matéria ou Categoria</label>
+                    <input type="text" id="fc-input-category" required placeholder="Ex: Biologia, Geografia, Inglês" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Pergunta (Frente)</label>
+                    <textarea id="fc-input-front" required rows="2" placeholder="Ex: Qual país tem o maior território do mundo?" class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200 resize-none"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-400 mb-1.5">Resposta (Verso)</label>
+                    <textarea id="fc-input-back" required rows="2" placeholder="Ex: Rússia." class="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 focus:border-brand-500 focus:outline-none rounded-xl text-sm text-slate-200 resize-none"></textarea>
+                </div>
+
+                <div class="flex gap-3 pt-2">
+                    <button type="button" onclick="closeNewFlashcardModal()" class="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold rounded-xl text-sm transition-all">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 py-3 bg-brand-600 hover:bg-brand-500 text-white font-semibold rounded-xl text-sm transition-all shadow-lg shadow-brand-500/20">
+                        Criar Flashcard
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- FIREBASE & CORE JAVASCRIPT STATE ENGINE -->
+    <script type="module">
+        // Importações diretas dos SDKs oficiais do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInWithCustomToken, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, onSnapshot, addDoc, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Variáveis globais do ambiente (injetadas ou mockadas para desenvolvimento)
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-foco-produtivo';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' 
+            ? JSON.parse(__firebase_config) 
+            : {
+                apiKey: "",
+                authDomain: "mock-auth-domain.firebaseapp.com",
+                projectId: "mock-project-id",
+                storageBucket: "mock-storage-bucket.appspot.com",
+                messagingSenderId: "123456789",
+                appId: "1:123456789:web:abcdef"
+            };
+
+        // Inicialização do Firebase e Firestore
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        // Estado local reactivo à base de dados
+        let state = {
+            tasks: [],
+            pomodoro: {
+                mode: 'work', // work, short, long
+                timeLeft: 25 * 60,
+                workTime: 25,
+                shortTime: 5,
+                longTime: 15,
+                isRunning: false,
+                timerId: null,
+                sessionsCompleted: 0,
+                minutesStudied: 0
+            },
+            flashcards: [],
+            activeTab: 'dashboard',
+            currentFlashcardIndex: 0,
+            isCardFlipped: false,
+            taskFilter: 'all'
+        };
+
+        let user = null;
+
+        // Frases de motivação
+        const quotes = [
+            "A consistência supera o talento. Continue focado!",
+            "O progresso lento ainda é progresso. Não pare.",
+            "A melhor maneira de prever o futuro é criá-lo.",
+            "Foco não é apenas dizer sim ao que você quer, é dizer não a outras distrações.",
+            "Não limite seus desafios, desafie seus limites.",
+            "Um passo de cada vez é tudo o que você precisa para alcançar o topo.",
+            "Faça valer a pena os seus 25 minutos de total dedicação.",
+            "O aprendizado ativo é a chave para a verdadeira memorização de longo prazo."
+        ];
+
+        // GESTÃO DE SESSÃO DO UTILIZADOR (REGRA 3: Auth Antes de Queries)
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token);
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Erro na autenticação:", err);
+                showToast("Erro de Autenticação", "Não foi possível ligar ao servidor de segurança.");
+            }
+        };
+
+        // Ouvinte de Estado da Autenticação
+        onAuthStateChanged(auth, (currentUser) => {
+            user = currentUser;
+            if (user) {
+                // Atualizar painéis visuais do Utilizador
+                document.getElementById('user-id-display').textContent = user.uid;
+                
+                // Atualizar estado de conexão
+                document.getElementById('sync-dot').className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                document.getElementById('sync-dot-mobile').className = "w-2.5 h-2.5 rounded-full bg-emerald-500";
+                document.getElementById('sync-text').textContent = "Sincronizado na Nuvem";
+
+                // Ativar sincronização em tempo real das coleções privadas (REGRA 1: Caminhos estritos)
+                setupRealtimeSync();
+            } else {
+                document.getElementById('user-id-display').textContent = "Não autenticado";
+                document.getElementById('sync-dot').className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+                document.getElementById('sync-dot-mobile').className = "w-2.5 h-2.5 rounded-full bg-rose-500";
+                document.getElementById('sync-text').textContent = "Sem Ligação";
+            }
+        });
+
+        // SINCRONIZAÇÃO EM TEMPO REAL (MANDATÓRIO: Sem queries complexas, com callback de erro)
+        function setupRealtimeSync() {
+            if (!user) return;
+
+            // 1. Sincronização de Tarefas
+            const tasksCollection = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
+            onSnapshot(tasksCollection, (snapshot) => {
+                state.tasks = [];
+                snapshot.forEach(doc => {
+                    state.tasks.push({ id: doc.id, ...doc.data() });
+                });
+                // Ordenar localmente por data de criação (evitando queries complexas)
+                state.tasks.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                
+                renderTasks();
+                updateDashboard();
+            }, (error) => {
+                console.error("Erro a ler tarefas do Firestore:", error);
+                showToast("Erro de Sync", "Não foi possível descarregar as tarefas da nuvem.");
+            });
+
+            // 2. Sincronização de Flashcards
+            const flashcardsCollection = collection(db, 'artifacts', appId, 'users', user.uid, 'flashcards');
+            onSnapshot(flashcardsCollection, (snapshot) => {
+                state.flashcards = [];
+                snapshot.forEach(doc => {
+                    state.flashcards.push({ id: doc.id, ...doc.data() });
+                });
+                state.flashcards.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                
+                renderFlashcards();
+                updateDashboard();
+            }, (error) => {
+                console.error("Erro a ler flashcards:", error);
+            });
+
+            // 3. Estatísticas Gerais (Pomodoro progress)
+            const statsDoc = doc(db, 'artifacts', appId, 'users', user.uid, 'stats', 'overall');
+            onSnapshot(statsDoc, (docSnap) => {
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    state.pomodoro.minutesStudied = data.minutesStudied || 0;
+                    state.pomodoro.sessionsCompleted = data.sessionsCompleted || 0;
+                } else {
+                    state.pomodoro.minutesStudied = 0;
+                    state.pomodoro.sessionsCompleted = 0;
+                }
+                updateDashboard();
+            }, (error) => {
+                console.error("Erro a ler estatísticas:", error);
+            });
+        }
+
+        // GUARDAR ESTATÍSTICAS NA NUVEM
+        async function saveStatsToCloud() {
+            if (!user) return;
+            const statsDoc = doc(db, 'artifacts', appId, 'users', user.uid, 'stats', 'overall');
+            try {
+                await setDoc(statsDoc, {
+                    minutesStudied: state.pomodoro.minutesStudied,
+                    sessionsCompleted: state.pomodoro.sessionsCompleted
+                }, { merge: true });
+            } catch (err) {
+                console.error("Erro ao guardar estatísticas:", err);
+            }
+        }
+
+        // ÁUDIO INTERNO (Sintetizador Web Audio API)
+        function playBeep() {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                if (ctx.state === 'suspended') ctx.resume();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+                osc.frequency.setValueAtTime(880, ctx.currentTime + 0.15);
+                gain.gain.setValueAtTime(0.3, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.5);
+                osc.start();
+                osc.stop(ctx.currentTime + 0.5);
+            } catch (error) {
+                console.log("AudioContext bloqueado ou indisponível:", error);
+            }
+        }
+
+        // CONTROLOS DE UI & TOAST
+        function showToast(title, message) {
+            const toast = document.getElementById('custom-toast');
+            document.getElementById('toast-title').textContent = title;
+            document.getElementById('toast-message').textContent = message;
+            toast.classList.remove('hidden');
+            setTimeout(hideToast, 4000);
+        }
+
+        function hideToast() {
+            document.getElementById('custom-toast').classList.add('hidden');
+        }
+
+        // ALTERNADOR DE SEÇÕES
+        function switchTab(tabName) {
+            state.activeTab = tabName;
+            ['dashboard', 'pomodoro', 'tasks', 'flashcards'].forEach(tab => {
+                document.getElementById(`tab-content-${tab}`).classList.add('hidden');
+            });
+            document.getElementById(`tab-content-${tabName}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
+            });
+            const activeDesktopBtn = document.getElementById(`btn-tab-${tabName}`);
+            if (activeDesktopBtn) {
+                activeDesktopBtn.className = "nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl font-medium text-sm transition-all duration-200 bg-brand-600/10 text-brand-200 border-l-4 border-brand-500";
+            }
+
+            ['dashboard', 'pomodoro', 'tasks', 'flashcards'].forEach(tab => {
+                const mobileBtn = document.getElementById(`btn-m-${tab}`);
+                if (mobileBtn) {
+                    mobileBtn.className = (tab === tabName) ? "flex flex-col items-center gap-1 text-brand-400" : "flex flex-col items-center gap-1 text-slate-500";
+                }
+            });
+
+            if (tabName === 'dashboard') {
+                updateDashboard();
+            } else if (tabName === 'tasks') {
+                renderTasks();
+            } else if (tabName === 'flashcards') {
+                renderFlashcards();
+            }
+        }
+
+        // FRASES MOTIVACIONAIS
+        function generateNewQuote() {
+            const rIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('motivational-quote').textContent = `"${quotes[rIndex]}"`;
+        }
+
+        // CRONÓMETRO POMODORO ENGINE
+        function setTimerMode(mode) {
+            state.pomodoro.mode = mode;
+            state.pomodoro.isRunning = false;
+            clearInterval(state.pomodoro.timerId);
+            state.pomodoro.timerId = null;
+
+            if (mode === 'work') {
+                state.pomodoro.timeLeft = state.pomodoro.workTime * 60;
+                document.getElementById('pomo-status-text').textContent = "Sessão Ativa de Foco";
+                document.getElementById('dash-timer-mode').textContent = "Trabalho";
+            } else if (mode === 'short') {
+                state.pomodoro.timeLeft = state.pomodoro.shortTime * 60;
+                document.getElementById('pomo-status-text').textContent = "Pausa Rápida";
+                document.getElementById('dash-timer-mode').textContent = "Pausa Curta";
+            } else if (mode === 'long') {
+                state.pomodoro.timeLeft = state.pomodoro.longTime * 60;
+                document.getElementById('pomo-status-text').textContent = "Pausa Longa";
+                document.getElementById('dash-timer-mode').textContent = "Pausa Longa";
+            }
+
+            ['work', 'short', 'long'].forEach(m => {
+                const btn = document.getElementById(`mode-btn-${m}`);
+                if (btn) {
+                    btn.className = (m === mode) 
+                        ? "flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-white bg-brand-600 shadow transition-all duration-300"
+                        : "flex-1 py-2 px-3 rounded-xl text-xs font-semibold text-slate-400 hover:text-slate-200 transition-all duration-300";
+                }
+            });
+
+            updateTimerDisplays();
+        }
+
+        function updateTimerDisplays() {
+            const minutes = Math.floor(state.pomodoro.timeLeft / 60);
+            const seconds = state.pomodoro.timeLeft % 60;
+            const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            document.getElementById('pomo-timer-display').textContent = formattedTime;
+            document.getElementById('dash-timer-display').textContent = formattedTime;
+
+            const toggleDashBtn = document.getElementById('dash-timer-btn-toggle');
+            const togglePomoBtn = document.getElementById('pomo-timer-btn-toggle');
+            
+            if (state.pomodoro.isRunning) {
+                if (toggleDashBtn) {
+                    toggleDashBtn.textContent = "Pausar";
+                    toggleDashBtn.className = "flex-grow py-2.5 px-4 bg-amber-600 hover:bg-amber-500 text-white rounded-xl text-sm font-semibold transition-all";
+                }
+                if (togglePomoBtn) {
+                    togglePomoBtn.textContent = "Pausar Foco";
+                    togglePomoBtn.className = "flex-grow py-4 px-6 bg-amber-600 hover:bg-amber-500 text-white rounded-2xl text-base font-bold transition-all shadow-xl hover:scale-[1.02] active:scale-[0.98]";
+                }
+            } else {
+                if (toggleDashBtn) {
+                    toggleDashBtn.textContent = "Iniciar Foco";
+                    toggleDashBtn.className = "flex-grow py-2.5 px-4 bg-brand-600 hover:bg-brand-500 text-white rounded-xl text-sm font-semibold transition-all";
+                }
+                if (togglePomoBtn) {
+                    togglePomoBtn.textContent = "Começar Sessão";
+                    togglePomoBtn.className = "flex-grow py-4 px-6 bg-brand-600 hover:bg-brand-500 text-white rounded-2xl text-base font-bold transition-all shadow-xl shadow-brand-500/20 hover:scale-[1.02] active:scale-[0.98]";
+                }
+            }
+        }
+
+        function toggleTimer() {
+            if (state.pomodoro.isRunning) {
+                state.pomodoro.isRunning = false;
+                clearInterval(state.pomodoro.timerId);
+                state.pomodoro.timerId = null;
+            } else {
+                state.pomodoro.isRunning = true;
+                state.pomodoro.timerId = setInterval(() => {
+                    if (state.pomodoro.timeLeft > 0) {
+                        state.pomodoro.timeLeft--;
+                        if (state.pomodoro.mode === 'work' && state.pomodoro.timeLeft % 60 === 0) {
+                            state.pomodoro.minutesStudied++;
+                            saveStatsToCloud();
+                        }
+                        updateTimerDisplays();
+                    } else {
+                        playBeep();
+                        state.pomodoro.isRunning = false;
+                        clearInterval(state.pomodoro.timerId);
+                        state.pomodoro.timerId = null;
+                        
+                        if (state.pomodoro.mode === 'work') {
+                            state.pomodoro.sessionsCompleted++;
+                            state.pomodoro.minutesStudied += state.pomodoro.workTime;
+                            saveStatsToCloud();
+                            showToast("🍅 Foco Completo!", "Bom trabalho! Faça agora uma pausa de 5 minutos.");
+                            setTimerMode('short');
+                        } else {
+                            showToast("☕ Pausa Concluída!", "O seu tempo de descanso terminou. Vamos recomeçar o foco?");
+                            setTimerMode('work');
+                        }
+                    }
+                }, 1000);
+            }
+            updateTimerDisplays();
+        }
+
+        function resetTimer() {
+            state.pomodoro.isRunning = false;
+            clearInterval(state.pomodoro.timerId);
+            state.pomodoro.timerId = null;
+            setTimerMode(state.pomodoro.mode);
+        }
+
+        function applyTimerConfig() {
+            const wVal = parseInt(document.getElementById('cfg-work').value);
+            const sVal = parseInt(document.getElementById('cfg-short').value);
+            const lVal = parseInt(document.getElementById('cfg-long').value);
+
+            if (wVal > 0 && sVal > 0 && lVal > 0) {
+                state.pomodoro.workTime = wVal;
+                state.pomodoro.shortTime = sVal;
+                state.pomodoro.longTime = lVal;
+                setTimerMode(state.pomodoro.mode);
+                showToast("Configuração Guardada", "As durações foram atualizadas!");
+            } else {
+                showToast("Erro", "Insira valores válidos superiores a zero.");
+            }
+        }
+
+        // TAREFAS / TASK MANAGER (ESCRITA NO FIRESTORE)
+        async function handleAddTask(event) {
+            event.preventDefault();
+            if (!user) {
+                showToast("Erro", "Inicie sessão primeiro para guardar na nuvem.");
+                return;
+            }
+
+            const titleInput = document.getElementById('task-input-title');
+            const categoryInput = document.getElementById('task-input-category');
+            const priorityInput = document.getElementById('task-input-priority');
+
+            const newTask = {
+                title: titleInput.value.trim(),
+                category: categoryInput.value,
+                priority: priorityInput.value,
+                completed: false,
+                createdAt: Date.now()
+            };
+
+            titleInput.value = '';
+
+            try {
+                const tasksCol = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
+                await addDoc(tasksCol, newTask);
+                showToast("Tarefa Guardada", "A tarefa foi sincronizada com sucesso!");
+            } catch (err) {
+                console.error("Erro ao guardar tarefa:", err);
+                showToast("Erro", "Falha de ligação à nuvem.");
+            }
+        }
+
+        async function handleQuickAddTask(event) {
+            event.preventDefault();
+            if (!user) return;
+
+            const input = document.getElementById('dash-quick-add-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const newTask = {
+                title: text,
+                category: 'Estudos',
+                priority: 'Média',
+                completed: false,
+                createdAt: Date.now()
+            };
+
+            input.value = '';
+
+            try {
+                const tasksCol = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
+                await addDoc(tasksCol, newTask);
+                showToast("Tarefa Criada!", "Adicionado rapidamente à nuvem.");
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        async function toggleTaskCompletion(id) {
+            if (!user) return;
+            const task = state.tasks.find(t => t.id === id);
+            if (task) {
+                const nextStatus = !task.completed;
+                if (nextStatus) playBeep();
+
+                try {
+                    const taskDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'tasks', id);
+                    await updateDoc(taskDocRef, { completed: nextStatus });
+                } catch (err) {
+                    console.error("Erro a atualizar tarefa:", err);
+                }
+            }
+        }
+
+        async function deleteTask(id) {
+            if (!user) return;
+            try {
+                const taskDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'tasks', id);
+                await deleteDoc(taskDocRef);
+                showToast("Tarefa Removida", "A tarefa foi eliminada.");
+            } catch (err) {
+                console.error("Erro ao remover:", err);
+            }
+        }
+
+        function renderTasks() {
+            const container = document.getElementById('tasks-render-list');
+            const emptyState = document.getElementById('tasks-empty-state');
+            container.innerHTML = '';
+
+            let filteredList = state.tasks;
+            if (state.taskFilter === 'pending') {
+                filteredList = state.tasks.filter(t => !t.completed);
+            } else if (state.taskFilter === 'completed') {
+                filteredList = state.tasks.filter(t => t.completed);
+            }
+
+            if (filteredList.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            filteredList.forEach(task => {
+                const priorityColors = {
+                    'Alta': 'bg-rose-500/10 text-rose-400 border-rose-500/20',
+                    'Média': 'bg-amber-500/10 text-accent-500 border-amber-500/20',
+                    'Baixa': 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                };
+
+                const card = document.createElement('div');
+                card.className = `flex items-center justify-between p-4 rounded-2xl bg-slate-900 border ${task.completed ? 'border-slate-800 opacity-60' : 'border-slate-800 hover:border-slate-700'} transition-all`;
+                card.innerHTML = `
+                    <div class="flex items-center gap-3.5 flex-grow pr-4">
+                        <button onclick="toggleTaskCompletion('${task.id}')" class="flex-shrink-0 w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${task.completed ? 'bg-brand-600 border-brand-600 text-white' : 'border-slate-700 hover:border-brand-500 bg-slate-950'}" title="Marcar como concluída">
+                            ${task.completed ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' : ''}
+                        </button>
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-slate-100 ${task.completed ? 'line-through text-slate-500' : ''}">${task.title}</p>
+                            <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                                <span class="text-[10px] bg-slate-950 border border-slate-800 text-slate-400 px-2 py-0.5 rounded-full font-medium">${task.category}</span>
+                                <span class="text-[10px] border px-2 py-0.5 rounded-full font-bold ${priorityColors[task.priority] || 'bg-slate-800 text-slate-400'}">${task.priority}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-rose-400 p-2 rounded-xl hover:bg-slate-800 transition-all flex-shrink-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function filterTasks(filterType) {
+            state.taskFilter = filterType;
+            ['all', 'pending', 'completed'].forEach(f => {
+                const btn = document.getElementById(`filter-${f}`);
+                if (btn) {
+                    btn.className = (f === filterType)
+                        ? "px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all bg-brand-600 text-white"
+                        : "px-3.5 py-1.5 text-xs font-semibold rounded-lg transition-all text-slate-400 hover:text-white bg-slate-800 hover:bg-slate-700";
+                }
+            });
+            renderTasks();
+        }
+
+        // FLASHCARDS DE ESTUDO ACTIVO (ESCRITA NO FIRESTORE)
+        function renderFlashcards() {
+            const container = document.getElementById('flashcards-study-container');
+            const emptyState = document.getElementById('flashcards-empty-state');
+            
+            if (state.flashcards.length === 0) {
+                container.classList.add('hidden');
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                container.classList.remove('hidden');
+                emptyState.classList.add('hidden');
+            }
+
+            if (state.currentFlashcardIndex >= state.flashcards.length) {
+                state.currentFlashcardIndex = 0;
+            }
+
+            const currentCard = state.flashcards[state.currentFlashcardIndex];
+            
+            document.getElementById('flash-idx-display').textContent = `Card ${state.currentFlashcardIndex + 1} de ${state.flashcards.length}`;
+            document.getElementById('flash-category-display').textContent = currentCard.category;
+            document.getElementById('flash-front-text').textContent = currentCard.front;
+            document.getElementById('flash-back-text').textContent = currentCard.back;
+
+            state.isCardFlipped = false;
+            document.getElementById('flashcard-inner').style.transform = '';
+        }
+
+        function flipActiveCard() {
+            const inner = document.getElementById('flashcard-inner');
+            state.isCardFlipped = !state.isCardFlipped;
+            inner.style.transform = state.isCardFlipped ? 'rotateY(180deg)' : '';
+        }
+
+        function nextFlashcard() {
+            if (state.flashcards.length <= 1) return;
+            state.currentFlashcardIndex = (state.currentFlashcardIndex + 1) % state.flashcards.length;
+            renderFlashcards();
+        }
+
+        function prevFlashcard() {
+            if (state.flashcards.length <= 1) return;
+            state.currentFlashcardIndex = (state.currentFlashcardIndex - 1 + state.flashcards.length) % state.flashcards.length;
+            renderFlashcards();
+        }
+
+        function openNewFlashcardModal() {
+            document.getElementById('flashcard-modal').classList.remove('hidden');
+        }
+
+        function closeNewFlashcardModal() {
+            document.getElementById('flashcard-modal').classList.add('hidden');
+        }
+
+        async function handleCreateFlashcard(event) {
+            event.preventDefault();
+            if (!user) return;
+
+            const category = document.getElementById('fc-input-category').value.trim();
+            const front = document.getElementById('fc-input-front').value.trim();
+            const back = document.getElementById('fc-input-back').value.trim();
+
+            const newCard = {
+                category: category,
+                front: front,
+                back: back,
+                createdAt: Date.now()
+            };
+
+            document.getElementById('fc-input-category').value = '';
+            document.getElementById('fc-input-front').value = '';
+            document.getElementById('fc-input-back').value = '';
+
+            closeNewFlashcardModal();
+
+            try {
+                const fcCol = collection(db, 'artifacts', appId, 'users', user.uid, 'flashcards');
+                await addDoc(fcCol, newCard);
+                state.currentFlashcardIndex = 0; // focar no mais recente
+                showToast("Flashcard Guardado", "Salvo para revisão ativa de: " + category);
+            } catch (err) {
+                console.error(err);
+                showToast("Erro", "Falha de ligação à nuvem.");
+            }
+        }
+
+        async function deleteActiveFlashcard() {
+            if (!user || state.flashcards.length === 0) return;
+            const currentCard = state.flashcards[state.currentFlashcardIndex];
+            if (currentCard) {
+                try {
+                    const cardDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'flashcards', currentCard.id);
+                    await deleteDoc(cardDocRef);
+                    showToast("Card Removido", "O flashcard foi apagado.");
+                } catch (err) {
+                    console.error("Erro ao apagar flashcard:", err);
+                }
+            }
+        }
+
+        // ATUALIZAÇÃO DO PAINEL PRINCIPAL (DASHBOARD)
+        function updateDashboard() {
+            const totalTasks = state.tasks.length;
+            const completedTasks = state.tasks.filter(t => t.completed).length;
+            const completionPercent = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0;
+            const pendingTasks = totalTasks - completedTasks;
+
+            document.getElementById('stat-completed-percent').textContent = `${completionPercent}%`;
+            document.getElementById('stat-focus-minutes').textContent = `${state.pomodoro.minutesStudied} min`;
+            document.getElementById('stat-sessions-count').textContent = `${state.pomodoro.sessionsCompleted} sessões`;
+            document.getElementById('stat-pending-tasks').textContent = `${pendingTasks}`;
+            document.getElementById('stat-completed-count').textContent = `${completedTasks} concluídas hoje`;
+            document.getElementById('stat-cards-count').textContent = `${state.flashcards.length}`;
+
+            // Renderização resumida na página inicial
+            const dashTaskListContainer = document.getElementById('dash-tasks-list');
+            dashTaskListContainer.innerHTML = '';
+
+            const sortedDashboardTasks = [...state.tasks]
+                .sort((a,b) => a.completed - b.completed)
+                .slice(0, 4);
+
+            if (sortedDashboardTasks.length === 0) {
+                dashTaskListContainer.innerHTML = `
+                    <div class="text-center py-6">
+                        <p class="text-xs text-slate-500">Sem tarefas agendadas.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            sortedDashboardTasks.forEach(task => {
+                const wrapper = document.createElement('div');
+                wrapper.className = "flex items-center justify-between p-3 bg-slate-950 border border-slate-800 rounded-xl hover:border-slate-700 transition-all";
+                wrapper.innerHTML = `
+                    <div class="flex items-center gap-2.5 min-w-0">
+                        <button onclick="toggleTaskCompletion('${task.id}')" class="flex-shrink-0 w-5 h-5 rounded border flex items-center justify-center transition-all ${task.completed ? 'bg-brand-600 border-brand-600 text-white' : 'border-slate-700 bg-slate-900 hover:border-brand-500'}">
+                            ${task.completed ? '<svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>' : ''}
+                        </button>
+                        <span class="text-xs font-medium text-slate-200 truncate ${task.completed ? 'line-through text-slate-500' : ''}">${task.title}</span>
+                    </div>
+                    <span class="text-[9px] bg-brand-500/10 text-brand-300 font-bold px-1.5 py-0.5 rounded-full">${task.category}</span>
+                `;
+                dashTaskListContainer.appendChild(wrapper);
+            });
+        }
+
+        // Exportar funções globais para permitir interações nos onclicks tradicionais
+        window.switchTab = switchTab;
+        window.toggleTimer = toggleTimer;
+        window.resetTimer = resetTimer;
+        window.applyTimerConfig = applyTimerConfig;
+        window.toggleTaskCompletion = toggleTaskCompletion;
+        window.deleteTask = deleteTask;
+        window.handleAddTask = handleAddTask;
+        window.handleQuickAddTask = handleQuickAddTask;
+        window.filterTasks = filterTasks;
+        window.flipActiveCard = flipActiveCard;
+        window.nextFlashcard = nextFlashcard;
+        window.prevFlashcard = prevFlashcard;
+        window.openNewFlashcardModal = openNewFlashcardModal;
+        window.closeNewFlashcardModal = closeNewFlashcardModal;
+        window.handleCreateFlashcard = handleCreateFlashcard;
+        window.deleteActiveFlashcard = deleteActiveFlashcard;
+        window.generateNewQuote = generateNewQuote;
+        window.playBeep = playBeep;
+        window.hideToast = hideToast;
+        window.setTimerMode = setTimerMode;
+
+        // Início da sequência
+        window.onload = function() {
+            generateNewQuote();
+            initAuth();
+            updateDashboard();
+            updateTimerDisplays();
+        };
+    </script>
+</body>
+</html>

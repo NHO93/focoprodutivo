@@ -158,7 +158,7 @@
         <!-- CORPO PRINCIPAL COM SCROLL -->
         <div class="p-4 md:p-8 flex-grow">
             <!-- NOTIFICAÇÃO TOAST -->
-            <div id="custom-toast" class="hidden fixed bottom-20 md:bottom-6 right-6 z-50 max-w-sm bg-slate-900 border border-brand-500/30 shadow-2xl p-4 rounded-2xl flex items-start gap-3 animate-bounce">
+            <div id="custom-toast" class="hidden fixed bottom-20 md:bottom-6 right-6 z-50 max-w-sm bg-slate-900 border border-brand-500/30 shadow-2xl p-4 rounded-2xl flex items-start gap-3">
                 <div class="p-2 bg-brand-600 rounded-xl text-white flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -684,7 +684,16 @@
                 }
             } catch (err) {
                 console.error("Erro na autenticação:", err);
-                showToast("Erro de Autenticação", "Não foi possível ligar ao servidor de segurança.");
+                
+                // Análise diagnóstica inteligente de erro
+                if (err.code === 'auth/operation-not-allowed') {
+                    showToast(
+                        "Ative o Login Anónimo!", 
+                        "Aceda ao Firebase Console > Authentication > Sign-in Method e ative o fornecedor 'Anónimo'!"
+                    );
+                } else {
+                    showToast("Erro de Autenticação", "Não foi possível ligar ao servidor de segurança.");
+                }
             }
         };
 
@@ -804,7 +813,6 @@
             document.getElementById('toast-title').textContent = title;
             document.getElementById('toast-message').textContent = message;
             toast.classList.remove('hidden');
-            setTimeout(hideToast, 4000);
         }
 
         function hideToast() {
@@ -1000,6 +1008,9 @@
                 const tasksCol = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
                 await addDoc(tasksCol, newTask);
                 showToast("Tarefa Guardada", "A tarefa foi sincronizada com sucesso!");
+                
+                // Auto-fechar alertas anteriores se houver
+                setTimeout(hideToast, 3000);
             } catch (err) {
                 console.error("Erro ao guardar tarefa:", err);
                 showToast("Erro", "Falha de ligação à nuvem.");
@@ -1028,6 +1039,7 @@
                 const tasksCol = collection(db, 'artifacts', appId, 'users', user.uid, 'tasks');
                 await addDoc(tasksCol, newTask);
                 showToast("Tarefa Criada!", "Adicionado rapidamente à nuvem.");
+                setTimeout(hideToast, 3000);
             } catch (err) {
                 console.error(err);
             }
@@ -1055,6 +1067,7 @@
                 const taskDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'tasks', id);
                 await deleteDoc(taskDocRef);
                 showToast("Tarefa Removida", "A tarefa foi eliminada.");
+                setTimeout(hideToast, 3000);
             } catch (err) {
                 console.error("Erro ao remover:", err);
             }
@@ -1176,6 +1189,7 @@
             document.getElementById('flashcard-modal').classList.remove('hidden');
         }
 
+        // FECHAR MODAL
         function closeNewFlashcardModal() {
             document.getElementById('flashcard-modal').classList.add('hidden');
         }
@@ -1206,6 +1220,7 @@
                 await addDoc(fcCol, newCard);
                 state.currentFlashcardIndex = 0; 
                 showToast("Flashcard Guardado", "Salvo para revisão ativa de: " + category);
+                setTimeout(hideToast, 3000);
             } catch (err) {
                 console.error(err);
                 showToast("Erro", "Falha de ligação à nuvem.");
@@ -1220,6 +1235,7 @@
                     const cardDocRef = doc(db, 'artifacts', appId, 'users', user.uid, 'flashcards', currentCard.id);
                     await deleteDoc(cardDocRef);
                     showToast("Card Removido", "O flashcard foi apagado.");
+                    setTimeout(hideToast, 3000);
                 } catch (err) {
                     console.error("Erro ao apagar flashcard:", err);
                 }

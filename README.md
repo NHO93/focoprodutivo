@@ -4,7 +4,7 @@
 
 > Tudo é guardado automaticamente em tempo real na nuvem através do Firebase Firestore, garantindo que nunca perde o seu progresso.
 
-> Funcionalidades
+## Funcionalidades
 * Método Pomodoro: Temporizador com ciclos ajustáveis de foco, pausa curta e pausa longa com alertas sonoros integrados.
 ￼
 * Quadro de Tarefas: Adicione, filtre por status (todas, pendentes, concluídas) e defina níveis de prioridade (Alta, Média, Baixa) para as suas metas diárias.
